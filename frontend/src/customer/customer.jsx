@@ -10,7 +10,7 @@ import TabsContent from '../common/tab/tabsContent'
 import TabHeader from '../common/tab/tabHeader'
 import TabContent from '../common/tab/tabContent'
 
-import { init, create, update, remove } from './customerActions'
+import { init, create, update, remove, search } from './customerActions'
 
 import List from './customerList'
 import Form from './customerForm'
@@ -35,7 +35,7 @@ class Customer extends Component {
                     </TabsHeader>
                     <TabsContent>
                         <TabContent id='tabList'>
-                            <List />
+                            <List onSubmit={this.props.search}/>
                         </TabContent>
                         <TabContent id='tabCreate'>
                             <Form onSubmit={this.props.create} 
@@ -58,6 +58,6 @@ class Customer extends Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({ 
-    init, create, update, remove }
+    init, create, update, remove, search }
 , dispatch)
 export default connect(null, mapDispatchToProps)(Customer)

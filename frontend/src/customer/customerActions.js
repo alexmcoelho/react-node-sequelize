@@ -7,14 +7,55 @@ import { city, description } from '../common/form/keyAutocomplete'
 import { selectObj } from '../common/form/autocompleteActions'
 
 const BASE_URL = 'http://localhost:3003'
-const INITIAL_VALUES = { credits: [{}] }
+const INITIAL_VALUES = { options: 'nameCustomer' }
 
 export function getList() {
+    return [
+        initialize('customerSearch', INITIAL_VALUES),
+        returnList()
+    ]
+}
+
+export function returnList() {
     const request = axios.get(`${BASE_URL}/customer`)
     return {
         type: 'CUSTOMER_FETCHED',
         payload: request
     }
+}
+
+export function search(values){
+    let complementQuery = ''
+    let param = ''
+    console.log('values', values)
+    switch (values.options) {
+        case 'nameCustomer':
+            complementQuery = 'name'
+            param = values.nameCustomer
+            break;
+        case 'street':
+            complementQuery = 'street'
+            param = values.street
+            break;
+        case 'registry':
+            complementQuery = 'registry'
+            param = values.registry
+            break;
+        case 'city':
+            complementQuery = 'city'
+            param = values.city
+            break;
+    
+        default:
+            break;
+    }
+
+    const request = axios.get(`${BASE_URL}/customer/${complementQuery}/${param}`)
+    return {
+        type: 'CUSTOMER_SEARCH',
+        payload: request
+    }
+    
 }
 
 function submit(v, method) {

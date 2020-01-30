@@ -24,7 +24,7 @@ class CustomerForm extends Component {
         const { handleSubmit, suggestions } = this.props
 
         return (
-            <form role='form' onSubmit={handleSubmit}>
+            <form role='form' onSubmit={handleSubmit} >
                 <div className="box-body">
                     <Field name='name' component={LabelAndInput} 
                         label='Nome' cols='12 4' placeholder='Informe o nome' />

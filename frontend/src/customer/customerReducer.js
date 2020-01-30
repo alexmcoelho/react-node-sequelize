@@ -4,6 +4,8 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case 'CUSTOMER_FETCHED':
             return { ...state, list: action.payload.data }
+        case 'CUSTOMER_SEARCH':
+            return { ...state, list: action.payload.data }
         default:
             return state
     }

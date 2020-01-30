@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { reduxForm, Field } from 'redux-form'
 import { getList, showUpdate, showDelete } from './customerActions'
+import LabelAndInput from '../common/form/labelAndInput'
+import LabelAndSelect from '../common/form/labelAndSelect'
+import If from '../common/operator/if'
 
 //exemplo de container
 class CustomerList extends Component {
-
+    
     componentWillMount() {
         this.props.getList()
+        this.handleSelect = this.handleSelect.bind(this)
+        this.setState({
+            valueSelect: 'nameCustomer'
+        })
     }
 
     renderRows(){
@@ -29,10 +37,66 @@ class CustomerList extends Component {
             </tr>
         ))
     }
+
+    handleSelect(event){
+        const value = event.target.value
+        this.setState({ valueSelect: value })
+    }
     
     render() {
+        const { handleSubmit } = this.props
+        const listOptions = [
+            {
+                value: 'nameCustomer',
+                option: 'Nome'    
+            },
+            {
+                value: 'street',
+                option: 'Endereço'    
+            },
+            {
+                value: 'registry',
+                option: 'CPF'    
+            },
+            {
+                value: 'city',
+                option: 'Município'    
+            }
+        ]
         return (
+
             <div>
+                <form role='form' onSubmit={handleSubmit} >
+                    <div className="box-body">
+                        <LabelAndSelect name='options' 
+                            label='Filtro' cols='12 4' placeholder='Informe o filtro'
+                            list={listOptions} propOnChangeEvent={this.handleSelect} />
+                        <If test={this.state.valueSelect === 'nameCustomer'}>
+                            <Field name='nameCustomer' component={LabelAndInput} 
+                                label='Nome' cols='12 4' placeholder='Informe o nome' />
+                        </If>
+                        <If test={this.state.valueSelect === 'street'}>
+                            <Field name='street' component={LabelAndInput} 
+                                label='Endereço' cols='12 4' placeholder='Informe o Endereço' />
+                        </If>
+                        <If test={this.state.valueSelect === 'registry'}>
+                            <Field name='registry' component={LabelAndInput} 
+                                label='CPF' cols='12 4' placeholder='Informe o CPF' />
+                        </If>
+                        <If test={this.state.valueSelect === 'city'}>
+                            <Field name='city' component={LabelAndInput} 
+                                label='Município' cols='12 4' placeholder='Informe o Município' />
+                        </If>
+                        
+                        <div className="col-xs-12 col-sm-4">
+                            <label style={{'visibility': 'hidden'}}>Pesquisa</label><br/>
+                            <button type='submit' className='btn btn-primary'>
+                                Pesquisar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 <table className="table">
                     <thead>
                         <tr>
@@ -52,6 +116,7 @@ class CustomerList extends Component {
     }
 }
 
+CustomerList = reduxForm({ form: 'customerSearch', destroyOnUnmount: false })(CustomerList)
 //dizendo qual atributo do reducer vai se tornar um atributo desse componente, nesse caso o list
 //state pega os estados de todos os componentes
 const mapStateToProps = state => ({ list: state.customer.list })

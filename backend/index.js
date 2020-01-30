@@ -23,8 +23,12 @@ app.get('/city/:id', function (req, res) {
       .then(o => res.json(o));
 });
 
-app.get('/city', function (req, res) {
-    models.City.findAll()
+app.get('/city/page/:page/linesPerPage/:linesPerPage', function (req, res) {
+    
+    models.City.findAll({
+        limit: 5,
+        offset: 1
+    })
       .then(o => res.json(o));
     
 });
@@ -72,32 +76,42 @@ app.get('/customer/:id', function (req, res) {
       .then(o => res.json(o));
 });
 
-app.get('/customer/:registry', function (req, res) {
+app.get('/customer/name/:name', function (req, res) {
+    models.Customer.findAll({
+        where: { 
+            name: { [Op.like]: `%${req.params.name}%` }
+        },
+        include: [{
+            model: models.City
+        }]
+    })
+      .then(o => res.json(o));
+});
+
+app.get('/customer/street/:street', function (req, res) {
+    models.Customer.findAll({
+        where: { 
+            street: { [Op.like]: `%${req.params.street}%` }
+        },
+        include: [{
+            model: models.City
+        }]
+    })
+      .then(o => res.json(o));
+});
+
+app.get('/customer/registry/:registry', function (req, res) {
     models.Customer.findAll({
         where: {
             registry: req.params.registry
-        }
+        },
+        include: [{
+            model: models.City
+        }]
     })
       .then(o => res.json(o));
 });
 
-app.get('/customer/:name', function (req, res) {
-    models.Customer.findAll({
-        where: { 
-            name: { [Op.like]: `%${req.params.name}%` }
-        }
-    })
-      .then(o => res.json(o));
-});
-
-app.get('/customer/:name', function (req, res) {
-    models.Customer.findAll({
-        where: { 
-            name: { [Op.like]: `%${req.params.name}%` }
-        }
-    })
-      .then(o => res.json(o));
-});
 
 app.get('/customer/city/:city', function (req, res) {
     models.Customer.findAll({
@@ -128,7 +142,7 @@ app.get('/customer', function (req, res) {
     models.Customer.findAll({
         include: [{
             model: models.City
-          }]
+        }]
     })
       .then(o => res.json(o));
     
