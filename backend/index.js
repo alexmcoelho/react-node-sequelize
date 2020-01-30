@@ -23,6 +23,12 @@ app.get('/city/:id', function (req, res) {
       .then(o => res.json(o));
 });
 
+
+app.get('/city', function (req, res) {
+    models.City.findAll()
+      .then(o => res.json(o));
+});
+
 app.get('/city/page/:page/linesPerPage/:linesPerPage', function (req, res) {
     
     models.City.findAll({
@@ -142,7 +148,8 @@ app.get('/customer', function (req, res) {
     models.Customer.findAll({
         include: [{
             model: models.City
-        }]
+        }    
+    ]
     })
       .then(o => res.json(o));
     

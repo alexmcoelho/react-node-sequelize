@@ -6,15 +6,14 @@ export default props => (
     <Grid cols={props.cols}>
         <div className="form-group">
             <label htmlFor={props.name}>{props.label}</label>
-            <Field name={props.name} 
+            <select {...props.input}
                 className='form-control' 
                 placeholder={props.placeholder}
                 readOnly={props.readOnly} 
-                onChange={props.propOnChangeEvent} 
-                component="select">
+                onChange={props.propOnChangeEvent} >
                     <option></option>
                     {generateSelect(props.list)}
-            </Field>
+            </select>
         </div>
     </Grid>
 )

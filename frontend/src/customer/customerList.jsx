@@ -6,6 +6,7 @@ import { getList, showUpdate, showDelete } from './customerActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import LabelAndSelect from '../common/form/labelAndSelect'
 import If from '../common/operator/if'
+import labelAndSelect from '../common/form/labelAndSelect'
 
 //exemplo de container
 class CustomerList extends Component {
@@ -68,7 +69,7 @@ class CustomerList extends Component {
             <div>
                 <form role='form' onSubmit={handleSubmit} >
                     <div className="box-body">
-                        <LabelAndSelect name='options' 
+                        <Field name='options' component={labelAndSelect}
                             label='Filtro' cols='12 4' placeholder='Informe o filtro'
                             list={listOptions} propOnChangeEvent={this.handleSelect} />
                         <If test={this.state.valueSelect === 'nameCustomer'}>
