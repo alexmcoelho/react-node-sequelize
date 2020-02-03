@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { toastr } from 'react-redux-toastr'
-import { reset as resetForm, initialize } from 'redux-form'
+import { reset as resetForm, initialize, change } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
 import { returnObj } from '../common/form/autocompleteActions'
 import { city, description } from '../common/form/keyAutocomplete'
@@ -55,7 +55,30 @@ export function search(values){
         type: 'CUSTOMER_SEARCH',
         payload: request
     }
-    
+}
+
+export async function searchCNPJ(param){
+    let obj = {}
+    try {
+        const result = await axios.get(`https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/${param}`)
+        obj = {
+            nameCustomer: result.data.nome,
+            CityId: result.data.municipio,
+            street: result.data.logradouro
+        }
+    } catch (error) {
+         obj = {}
+    }
+    return {
+        type: 'CUSTOMER_SEARCH_REGISTRY',
+        payload: obj
+    }
+}
+
+export function changeFieldValue(field, value) {
+    return [
+        change('customerForm', field, value)
+    ] 
 }
 
 function submit(v, method) {
