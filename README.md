@@ -1,1 +1,1 @@
-# vexta
+# react-node-sequelize
